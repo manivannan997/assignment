@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AtoZ</title>
+	<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script type="text/javascript">
+		var s=""
+		var count=0;
+		$(function(){
+				$("#draggable").draggable({axis:"x"});
+			});
+		var letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	function randomNumber(max){
+		var randomNum=Math.random();
+		var  numExpanded=randomNum*max;
+		var numFloored= Math.floor(numExpanded);
+			return numFloored;
+       }
+       function letterpick(){
+       	var random25az=randomNumber(letters.length);
+       	var randomletter=letters.charAt(random25az);
+       	return randomletter;
+       }
+       function positionpick(){
+       	var span=$("<span/>");
+       	span.css("position","absolute");
+       		span.css("top",0);
+       	var rx=randomNumber(99)+"%";
+       
+         span.css("left",rx);
+         span.text(letterpick());
+       	span.appendTo("body");
+       	return span;
+       }
+       function makeLetterFall(){
+       	var letterElement=positionpick();
+       	letterElement.css("color","rgb("+randomNumber(255)+","+randomNumber(255)+","+randomNumber(255)+")");
+       	letterElement.css("font-size","30px");
+       	
+       letterElement.animate({"top":"90%"},3000,function(){
+
+       		 var p=letterElement.position();
+       		var pp=p.left;
+       		var d=$("#draggable");
+       		 var d1=d.position();
+       		 var d2=d1.left;
+       		 if(pp>=d2&&pp<=(100+d2)){
+       		$("#draggable").append(letterElement.text());
+             count++;
+             if(count%6==0){
+             	$("#draggable").append("<br>");
+             }       		}
+       		$("#draggable").css("overflow","auto");
+       		
+            letterElement.fadeOut();
+            document.getElementById('demo').innerHTML=count;
+       	});
+
+       }
+       $(document).on();
+      
+       setInterval(makeLetterFall,100);
+       
+		</script>
+	
+</head>
+<style>
+#draggable{
+		width:100px;
+		height:100px;
+		background:red;
+		padding:10px;
+         margin-top:37%;
+   
+
+	}
+	</style>
+</style>
+<body style="background-color:black">
+	<div id="demo" style="color:white;"></div>
+	<div id="draggable" class="ui-widget-content">
+	</div>
+    
+</body>
+</html>
